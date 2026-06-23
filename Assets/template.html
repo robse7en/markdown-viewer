@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="{{THEME}}">
+<head>
+    <meta charset="utf-8" />
+    <base href="{{BASE}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{TITLE}}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.8.1/github-markdown-{{THEME}}.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.10.0/styles/{{HLJS}}.min.css" />
+    <link rel="stylesheet" href="{{ASSETS}}/app.css" />
+</head>
+<body class="theme-{{THEME}}">
+    <article class="markdown-body">
+        {{BODY}}
+    </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.10.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+    <script>
+        (function () {
+            var theme = document.documentElement.getAttribute('data-theme') || 'light';
+
+            // 1. Pull mermaid code blocks out before highlight.js touches them.
+            var mermaidBlocks = document.querySelectorAll('pre > code.language-mermaid');
+            mermaidBlocks.forEach(function (code) {
+                var pre = code.parentElement;
+                var div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = code.textContent;
+                pre.parentElement.replaceChild(div, pre);
+            });
+
+            // 2. Syntax-highlight the remaining code blocks.
+            if (window.hljs) {
+                document.querySelectorAll('pre code').forEach(function (block) {
+                    try { window.hljs.highlightElement(block); } catch (e) { /* ignore */ }
+                });
+            }
+
+            // 3. Render mermaid diagrams with the matching theme.
+            if (window.mermaid) {
+                try {
+                    window.mermaid.initialize({
+                        startOnLoad: false,
+                        securityLevel: 'strict',
+                        theme: theme === 'dark' ? 'dark' : 'default'
+                    });
+                    window.mermaid.run({ querySelector: '.mermaid' });
+                } catch (e) { /* ignore mermaid errors */ }
+            }
+        })();
+    </script>
+</body>
+</html>

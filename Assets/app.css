@@ -1,0 +1,28 @@
+/* Layout tweaks on top of github-markdown-css. */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body.theme-light { background: #ffffff; }
+body.theme-dark { background: #0d1117; }
+
+.markdown-body {
+    box-sizing: border-box;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 32px 40px 80px;
+}
+
+/* Mermaid diagrams: center and give them room. */
+.mermaid {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0;
+}
+
+@media (max-width: 767px) {
+    .markdown-body {
+        padding: 20px;
+    }
+}
